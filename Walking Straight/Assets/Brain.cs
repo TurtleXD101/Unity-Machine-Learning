@@ -14,7 +14,10 @@ public class Brain : MonoBehaviour
     private ThirdPersonCharacter m_Character; 
     private Vector3 m_Move;
     private bool m_Jump; 
-    bool alive = true;                     
+    bool alive = true;
+
+    public float distanceTravelled;
+    Vector3 startPosition;
 
     void OnCollisionEnter(Collision obj)
     {
@@ -37,6 +40,7 @@ public class Brain : MonoBehaviour
 		m_Character = GetComponent<ThirdPersonCharacter>();
         timeAlive = 0;
         alive = true;
+        startPosition = this.transform.position;
 	}
 
     // Fixed update is called in sync with physics
@@ -56,7 +60,11 @@ public class Brain : MonoBehaviour
         m_Move = v*Vector3.forward + h*Vector3.right;
         m_Character.Move(m_Move, crouch, m_Jump);
         m_Jump = false;
-        if(alive)
-        	timeAlive += Time.deltaTime;
+        if (alive)
+        {
+            timeAlive += Time.deltaTime;
+            distanceTravelled = Vector3.Distance(this.transform.position, startPosition);
+        }
+        	
     }
 }
